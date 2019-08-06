@@ -1,0 +1,52 @@
+GLava is an OpenGL audio spectrum visualizer primarily used for desktop windows or backgrounds. Displayed to the left is the radial shader module, and a more extensive demonstration can be seen here. Development is active, and reporting issues is encouranged.
+
+Compiling:
+
+$ git clone https://github.com/wacossusca34/glava
+$ cd glava
+$ CFLAGS="-march=native" meson build
+$ ninja -C build
+$ cd build
+$ sudo meson install
+$ glava
+
+Note: If you're using an old version of meson, and sudo meson install does not work, try running ninja install instead.
+
+You can run meson configure in the project directory to get a list of available compile-time configuration options.
+
+You can pass -DDEBUG to meson for debug builds of both glad (only with -Dglad) and glava, -Dstandalone allows you to run GLava in the build directory.
+
+Requirements:
+
+    X11 (Xext, Xcomposite, & Xrender)
+    PulseAudio
+    Linux or BSD
+
+Additional compile time requirements:
+
+    Meson
+    GCC (this program uses GNU C features)
+
+Optional requirements:
+
+    GLFW 3.1+ (optional, enable with ENABLE_GLFW=1)
+
+Ubuntu/Debian users: the following command ensures you have all the needed packages and headers to compile GLava:
+
+sudo apt-get install libpulse0 libpulse-dev libxext6 libxext-dev libxrender-dev libxcomposite-dev meson gcc 
+
+Installation
+
+Some distributions have a package for glava. If your distribution is not listed please use the compilation instructions above.
+
+    Arch Linux glava package, or glava-git AUR package
+    NixOS package
+    openSUSE package
+
+Configuration
+
+GLava will start by looking for an entry point in the user configuration folder (~/.config/glava/rc.glsl), and will fall back to loading from the shader installation folder (/etc/xdg/glava). The entry point will specify a module to load and should set global configuration variables. Configuration for specific modules can be done in their respective .glsl files, which the module itself will include.
+
+You should start by running glava --copy-config. This will copy over default configuration files and create symlinks to modules in your user config folder. GLava will either load system configuration files or the user provided ones, so it's not advised to copy these files selectively.
+
+To embed GLava in your desktop (for EWMH compliant window managers), run it with the --desktop flag and then position it accordingly with #request setgeometry x y width height in your rc.glsl.
